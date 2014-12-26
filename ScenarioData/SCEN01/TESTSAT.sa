@@ -36,10 +36,10 @@ BEGIN VehiclePath
     StartTime            24 Dec 2014 01:00:00.000000000
     StopTime             25 Dec 2014 01:00:00.000000000
     UseScenTime          No
-    RadiusOfPerigee      6.87813700000000e+006
+    RadiusOfPerigee      6.53423015000000e+006 
     Inclination          4.50000000000000e+001
-    Eccentricity         0.00000000000000e+000
-    ArgOfPerigee         0.00000000000000e+000
+    Eccentricity         0.05000000000000e+000
+    ArgOfPerigee         7.45406309681322e-016
     RightAscension       0.00000000000000e+000
     TrueAnomaly          0.00000000000000e+000
     TimeStep             60.000000
