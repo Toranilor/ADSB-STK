@@ -20,7 +20,7 @@ WalkerStruct.SMA = (Alt+6371)*1000; %convert altitude into semi-major axis lengt
 WalkerStruct.Inc = input('Please input desired inclination of constellation ');
 WalkerStruct.RAAN = input('Please input desired R.A.A.N of constellation ');
 WalkerStruct.NumPlanes = input('Please input desired number of planes of constellation ');
-WalkerStruct.NumSats = input('Please input desired number of satellites per plane of constellation ');
+
 
 %%Generating the Walker Constellation
 WalkerGen
@@ -31,3 +31,4 @@ cd Results ;
 mkdir(ScenName);
 cmd = ['Save / * "C:\Users\Tom\Dropbox\Matlab\TomADSB\Utility Development\Results\', ScenName, '"'];
 root.ExecuteCommand(cmd);
+cd ..;
