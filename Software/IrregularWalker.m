@@ -5,8 +5,9 @@ clear SatRecord
 
 %Initialisation
 cd Dev;
+SavedScenList
 Initialise
-ScenName = input('Please input desired scenario name ','s');
+ScenName = SanInput('Please input desired scenario name ',nameFolds,'n');
 scenario = root.Children.New('eScenario',ScenName);
 TimeSet
 
@@ -22,10 +23,10 @@ disp(['If you would like planes to be evenly spaced, enter ', num2str(RAANseed),
 
 for n = 1:NumPlanes
     WalkerStruct.Name = [SeedName,num2str(n)];
-    Alt = input(['For Plane ',num2str(n),' please input desired altitude in km ']);
+    Alt = SanInput(['For Plane ',num2str(n),' please input desired altitude in km '],[100;4000]); %Expected range is 100km - 4000km
     WalkerStruct.SMA = (Alt+6371)*1000; %convert altitude into semi-major axis length
-    WalkerStruct.Inc = input(['For Plane ',num2str(n), ' please input desired inclination ']);
-    WalkerStruct.RAAN = input(['For Plane ',num2str(n), ' please input desired R.A.A.N ']);
+    WalkerStruct.Inc = SanInput(['For Plane ',num2str(n), ' please input desired inclination '],[0;180]);
+    WalkerStruct.RAAN = SanInput(['For Plane ',num2str(n), ' please input desired R.A.A.N '],[0;360]);
     WalkerStruct.NumSats = input(['For Plane ', num2str(n), ' please input desired number of satellites ']);
     WalkerGen
 end

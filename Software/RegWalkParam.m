@@ -8,47 +8,52 @@ clear Ending LoopVector i j
 
 %Initialisation
 cd Dev;
+SavedScenList
 Initialise
-ScenName = input('Please input desired scenario name convention ','s');
+ScenName = SanInput('Please input desired scenario name ',nameFolds,'n');
 cd ../Results;
 mkdir(ScenName)
 cd ../Dev;
 
 
 %%User Input Gathering
-%   This is a 'default' struct, used to initialise
-Params = input('How many parameters would you like to vary? ');
-for i = 1:Params;
-    Name = upper(input(['What is the name of parameter ', num2str(i), ' you would like to vary? (Please enter SMA, Inclination, RAAN, NumPlanes or NumSats) '],'s'));
-    ParamVar.(['Name',num2str(i)]) = Name;
-    Min = input('What is the minimum of this parameter? ');
-    Max = input('What is the maximum of this parameter? ');
-    Betw = input('How many steps (including max/min) would you like to test ');
-    ParamVar.(['Steps',num2str(i)]) = linspace(Min,Max,Betw);
-end
 
-%Create a matrix showing which parameters are to be varied; VarVec will
-%show which 'number' each parameter is in ParamVar
-%Key:
-%1 = SMA
-%2 = Inclination
-%3 = RAAN
-%4 = NumPlanes
-%5 = NumSats
+Params = input('How many parameters would you like to vary? ');
 VarVec = zeros(5,1);
+%There's a fair bit going on below;
 for i = 1:Params;
-    switch ParamVar.(['Name',num2str(i)]);
+    %Firstly, I set up the 'qualifier' that SanInput checks agsinst; the
+    %variation runs a string compare for certain strings so this needs to
+    %be exact.
+    Qualifier = {'SMA','INCLINATION','RAAN','NUMPLANES','NUMSATS'};
+    Name = upper(SanInput(['What is the name of parameter ', num2str(i), ' you would like to vary? (Please enter SMA, Inclination, RAAN, NumPlanes or NumSats) '],Qualifier));
+    ParamVar.(['Name',num2str(i)]) = Name;
+    
+    %Here, I need to do a couple of things. Firstly, I create a vector that
+    %tells me which parameter is in which order in the ParamVar struct
+    %(it's ordered by user entry, not name). I also need to generate some
+    %qualifiers for certain parameters to be used in the max/min input.
+    
+    VarQual = [0;100000000]; %At the moment, SanInput can't handle a null value for the qualifier. For variables that need no qualifier, the qualifier is set to an arbitrarily large range.
+    switch Name
         case 'SMA'
             VarVec(1) = i;
         case 'INCLINATION'
             VarVec(2) = i;
+            VarQual = [0;180];
         case 'RAAN'
             VarVec(3) = i;
+            VarQual = [0;360];
         case 'NUMPLANES'
             VarVec(4) = i;
         case 'NUMSATS'
             VarVec(5) = i;
     end
+    
+    Min = input('What is the minimum of this parameter? ');
+    Max = SanInput('What is the maximum of this parameter? ',VarQual);
+    Betw = input('How many steps (including max/min) would you like to test ');
+    ParamVar.(['Steps',num2str(i)]) = linspace(Min,Max,Betw);
 end
 
 %Defining the remaining parameters (I would like to clean this up!)
@@ -77,10 +82,9 @@ LoopVector = ones(Params,1);
 for i = 1:Params
     Ending(i) = length(ParamVar.(['Steps',num2str(i)]))+1;
 end
-%This while loop something something
+
 %The loop vector has the leftmost digit as the most repeating (it loops
 %under the ones to it's right)
-
 counter = 0;
 while LoopVector(end) ~= Ending(end);
     
@@ -88,7 +92,7 @@ while LoopVector(end) ~= Ending(end);
     scenario = root.Children.New('eScenario',[ScenName,num2str(counter)]);
     %TimeSet;
     
-    %%GENERATION GOES HERE%%
+    %%Generation%%
     if VarVec(1) ~= 0;
         WalkerStruct.SMA = ParamVar.(['Steps',num2str(VarVec(1))])(LoopVector(VarVec(1)));
     end
