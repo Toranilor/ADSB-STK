@@ -29,3 +29,4 @@ http://www.agi.com/products/stk/modules/default.aspx/id/integrating-stk-and-matl
   
 KNOWN ISSUES:
 STK Fails to initialise; This is usually a licence issue, open STK and ensure that you can authenticate.
+In RegWalkParam, you can vary the same parameter more than once; this should not happen.
