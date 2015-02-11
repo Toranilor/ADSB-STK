@@ -50,7 +50,7 @@ for i = 1:Params;
             VarVec(5) = i;
     end
     
-    Min = input('What is the minimum of this parameter? ');
+    Min = SanInput('What is the minimum of this parameter? ',VarQual);
     Max = SanInput('What is the maximum of this parameter? ',VarQual);
     Betw = input('How many steps (including max/min) would you like to test ');
     ParamVar.(['Steps',num2str(i)]) = linspace(Min,Max,Betw);
@@ -63,10 +63,10 @@ if VarVec(1) == 0;
     WalkerStruct.SMA = (Alt+6371)*1000; %convert altitude into semi-major axis length
 end
 if VarVec(2) == 0;
-    WalkerStruct.Inc = input('Please input desired inclination of constellations ');
+    WalkerStruct.Inc = SanInput('Please input desired inclination of constellations ',[0;180]);
 end
 if VarVec(3) == 0;
-    WalkerStruct.RAAN = input('Please input desired R.A.A.N of constellations ');
+    WalkerStruct.RAAN = SanInput('Please input desired R.A.A.N of constellations ',[0;360]);
 end
 if VarVec(4) == 0;
     WalkerStruct.NumPlanes = input('Please input desired number of planes of constellations ');
