@@ -53,6 +53,10 @@ for i = 1:Params;
     Min = SanInput('What is the minimum of this parameter? ',VarQual);
     Max = SanInput('What is the maximum of this parameter? ',VarQual);
     Betw = input('How many steps (including max/min) would you like to test ');
+    if VarVec(1) == i; %We're varying SMA
+        Min = (Min+6371)*1000; %Got to turn KM into m from earth's centre.
+        Max = (Max+6371)*1000;
+    end
     ParamVar.(['Steps',num2str(i)]) = linspace(Min,Max,Betw);
 end
 
@@ -90,7 +94,7 @@ while LoopVector(end) ~= Ending(end);
     
     %Creating the Scenario
     scenario = root.Children.New('eScenario',[ScenName,num2str(counter)]);
-    %TimeSet;
+    TimeSet;
     
     %%Generation%%
     if VarVec(1) ~= 0;
